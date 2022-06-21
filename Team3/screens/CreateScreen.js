@@ -41,6 +41,20 @@ export function CreateScreen() {
     });
 
     if (!result.cancelled) {
+      let filename = result.uri.split("/").pop();
+      let match = /\.(\w+)$/.exec(filename);
+      let img_type = match ? `image/${match[1]}` : `image`;
+      setTrip({
+        ...trip,
+        image: {
+          uri:
+            Platform.OS === "android"
+              ? result.uri
+              : result.uri.replace("file://", ""),
+          name: filename,
+          type: img_type,
+        },
+      });
       setImage(result.uri);
     }
   };
@@ -55,12 +69,6 @@ export function CreateScreen() {
     setTrip({
       ...trip,
       description: text,
-    });
-  };
-  const handleChangeImage = (text) => {
-    setTrip({
-      ...trip,
-      image: image,
     });
   };
 
@@ -89,8 +97,6 @@ export function CreateScreen() {
                 borderRadius: 20,
                 margin: 10,
               }}
-              onPress={pickImage}
-              onLoadStart={handleChangeImage}
             />
             <Button title="Choose another image " onPress={pickImage} />
           </View>
