@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import authStore from "./authStore";
 import { instance } from "./instance";
 
 class TripStore {
@@ -10,7 +11,9 @@ class TripStore {
 
   createTrip = async (newTrip) => {
     try {
-      const response = await instance.post("/trips", newTrip);
+      const formData = new FormData();
+      for (const key in newTrip) formData.append(key, newTrip[key]);
+      const response = await instance.post("/trips", formData);
       this.trips.push(response.data);
     } catch (error) {
       console.log(error);

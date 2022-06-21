@@ -21,9 +21,6 @@ const Stack = createNativeStackNavigator();
 function App() {
   const checkUser = authStore.user; 
   return (
-  
-
-
     <NativeBaseProvider>
       <NavigationContainer>
         {
