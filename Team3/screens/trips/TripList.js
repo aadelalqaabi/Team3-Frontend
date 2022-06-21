@@ -27,7 +27,7 @@ function TripList({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#e3edf2" }}>
+    <SafeAreaView style={{ backgroundColor: "#e3edf2" , marginBottom: 160}}>
       <Text style={styles.name}>Trips</Text>
       <FlatList
         style={styles.productsList}

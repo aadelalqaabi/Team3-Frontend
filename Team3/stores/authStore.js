@@ -55,16 +55,15 @@ class AuthStore {
     delete instance.defaults.headers.common.Authorization;
   };
 
-  //   updateUser = async (updatedUser, userId, recipeId) => {
-  //     try {
-  //       const res = await instance.put(
-  //         `/${userId}/recipes/${recipeId}`,
-  //         updatedUser
-  //       );
-  //     } catch (error) {
-  //       console.log("RecipeStore-> updatedRecipe-> error", error);
-  //     }
-  //   };
+  updateUser = async (updatedUser) => {
+    try {
+      console.log(updatedUser);
+      const res = await instance.put(`/${updatedUser.id}`, updatedUser);
+      this.user = res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 
 const authStore = new AuthStore();
