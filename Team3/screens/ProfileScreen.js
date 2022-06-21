@@ -1,10 +1,87 @@
-import { Text, View } from "react-native";
-import Logout from "./authScreens/Logout";
-export function ProfileScreen() {
+import {
+  Text,
+  View,
+  SafeAreaView,
+  Button,
+  StyleSheet,
+  Image,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Logout from './authScreens/Logout';
+
+export function ProfileScreen({ navigation }) {
+  // const navigation = useNavigation();
+  const editProfileButton = () => {
+    navigation.navigate('Edit');
+  };
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>profile!</Text>
-      <Logout/>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.imageUserNameEdit}>
+        <View style={styles.imageUserName}>
+          <Image
+            style={styles.profileImage}
+            source={{
+              uri: 'https://reactnative.dev/img/tiny_logo.png',
+            }}
+          />
+          <Text style={styles.userName}>UserName</Text>
+        </View>
+        <View style={styles.edit}>
+          <Button
+            onPress={editProfileButton}
+            title="Edit"
+            color="#841584"
+            // accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
+      </View>
+      <View style={styles.bio}>
+        <Text style={styles.bioText}>
+          biobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobio
+        </Text>
+      </View>
+      <Logout />
+    </SafeAreaView>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    margin: 12,
+  },
+  imageUserNameEdit: {
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+  },
+  imageUserName: {
+    justifyContent: 'flex-Start',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+
+  profileImage: {
+    width: 75,
+    height: 75,
+    borderRadius: 40,
+  },
+  userName: {
+    fontSize: 20,
+    marginLeft: 10,
+  },
+  edit: {
+    backgroundColor: 'pink',
+    borderRadius: 10,
+  },
+  bio: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 25,
+    padding: 10,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  bioText: {
+    fontSize: 20,
+  },
+});
