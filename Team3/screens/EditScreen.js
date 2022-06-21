@@ -6,6 +6,10 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedbackBase,
+  Keyboard,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
@@ -13,8 +17,8 @@ import * as ImagePicker from "expo-image-picker";
 import authStore from "../stores/authStore";
 
 export default function EditScreen() {
-  const [text, onChangeText] = useState("");
-  const [user, setUser] = useState(authStore.user);
+  const [image, setImage] = useState(null);
+  const [user, setUser] = useState();
   const navigation = useNavigation();
   const cancelButton = () => {
     navigation.navigate("Profile");
@@ -44,8 +48,8 @@ export default function EditScreen() {
       let filename = result.uri.split("/").pop();
       let match = /\.(\w+)$/.exec(filename);
       let img_type = match ? `image/${match[1]}` : `image`;
-      setTrip({
-        ...trip,
+      setUser({
+        ...user,
         image: {
           uri:
             Platform.OS === "android"
@@ -64,11 +68,10 @@ export default function EditScreen() {
       ...user,
       bio: text,
     });
-    console.log(user);
   };
 
-  const handleSubmit = (event) => {
-    authStore.updateUser(user);
+  const handleSubmit = async (event) => {
+    await authStore.updateUser(user);
   };
 
   return (
@@ -78,11 +81,33 @@ export default function EditScreen() {
       </View>
       <View style={styles.main}>
         <View style={styles.addImage}>
-          <Button
-            // onPress={editProfileButton}
-            title="Add Image"
-            color="#841584"
-          />
+          <Text style={styles.title}>Choose an image</Text>
+          <View>
+            {image === null ? (
+              <Button
+                title="Pick an image from camera roll"
+                onPress={pickImage}
+              />
+            ) : (
+              <></>
+            )}
+
+            {image && (
+              <View>
+                <Image
+                  source={{ uri: image }}
+                  style={{
+                    alignSelf: "center",
+                    width: 384,
+                    height: 216,
+                    borderRadius: 20,
+                    margin: 10,
+                  }}
+                />
+                <Button title="Choose another image " onPress={pickImage} />
+              </View>
+            )}
+          </View>
         </View>
         <View style={styles.input}>
           <TextInput

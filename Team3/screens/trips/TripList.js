@@ -7,7 +7,6 @@ import * as Font from "expo-font";
 
 function TripList({ navigation }) {
   const trips = tripStore.getTrips();
-
   const [loaded] = Font.useFonts({
     Helvetica: require("../../assets/fonts/Helvetican.ttf"),
   });

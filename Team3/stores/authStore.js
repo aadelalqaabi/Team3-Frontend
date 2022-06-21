@@ -57,9 +57,10 @@ class AuthStore {
 
   updateUser = async (updatedUser) => {
     try {
-      console.log(updatedUser);
-      const res = await instance.put(`/${updatedUser.id}`, updatedUser);
-      this.user = res.data;
+      const formData = new FormData();
+      for (const key in updatedUser) formData.append(key, updatedUser[key]);
+      console.log(this.user.id);
+      const res = await instance.put(`/${this.user.id}`, formData);
     } catch (error) {
       console.log(error);
     }
