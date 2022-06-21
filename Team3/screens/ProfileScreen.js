@@ -5,42 +5,53 @@ import {
   Button,
   StyleSheet,
   Image,
+  ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Logout from './authScreens/Logout';
+import tripStore from '../stores/tripStore';
+import authStore from '../stores/authStore';
+import { Trip } from './trips/Trip';
 
-export function ProfileScreen({ navigation }) {
-  // const navigation = useNavigation();
+export function ProfileScreen() {
+  let trips = authStore.user.trips;
+  trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
+  trips = trips.map((trip) => (
+    <Trip
+      trip={trip}
+      onPress={() => {
+        navigation.navigate('TripDetails', { id: trip._id });
+      }}
+    />
+  ));
+  const navigation = useNavigation();
   const editProfileButton = () => {
     navigation.navigate('Edit');
+    console.log(trips);
   };
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.imageUserNameEdit}>
-        <View style={styles.imageUserName}>
-          <Image
-            style={styles.profileImage}
-            source={{
-              uri: 'https://reactnative.dev/img/tiny_logo.png',
-            }}
-          />
-          <Text style={styles.userName}>UserName</Text>
+      <ScrollView>
+        <View style={styles.imageUserNameEdit}>
+          <View style={styles.imageUserName}>
+            <Image
+              style={styles.profileImage}
+              source={{
+                uri: 'https://reactnative.dev/img/tiny_logo.png',
+              }}
+            />
+            <Text style={styles.userName}>{authStore.user.username}</Text>
+          </View>
+          <View style={styles.edit}>
+            <Button onPress={editProfileButton} title="Edit" color="#841584" />
+          </View>
         </View>
-        <View style={styles.edit}>
-          <Button
-            onPress={editProfileButton}
-            title="Edit"
-            color="#841584"
-            // accessibilityLabel="Learn more about this purple button"
-          />
+        <View style={styles.bio}>
+          <Text style={styles.bioText}>bio</Text>
         </View>
-      </View>
-      <View style={styles.bio}>
-        <Text style={styles.bioText}>
-          biobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobiobio
-        </Text>
-      </View>
-      <Logout />
+        <View>{trips}</View>
+        <Logout />
+      </ScrollView>
     </SafeAreaView>
   );
 }

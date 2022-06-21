@@ -1,7 +1,7 @@
-import { makeAutoObservable } from "mobx";
-import { instance } from "./instance";
-import decode from "jwt-decode";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { makeAutoObservable } from 'mobx';
+import { instance } from './instance';
+import decode from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class AuthStore {
   constructor() {
@@ -10,14 +10,14 @@ class AuthStore {
   user = null;
 
   setUser = async (token) => {
-    await AsyncStorage.setItem("myToken", JSON.stringify(token));
+    await AsyncStorage.setItem('myToken', JSON.stringify(token));
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
     this.user = decode(token);
   };
 
   checkForToken = async () => {
     let token = null;
-    const jsonValue = await AsyncStorage.getItem("myToken");
+    const jsonValue = await AsyncStorage.getItem('myToken');
     if (jsonValue !== null) token = JSON.parse(jsonValue);
 
     if (token) {
@@ -33,7 +33,7 @@ class AuthStore {
 
   register = async (newUser) => {
     try {
-      const response = await instance.post("/register", newUser);
+      const response = await instance.post('/register', newUser);
       this.setUser(response.data.token);
     } catch (error) {
       console.log(error);
@@ -42,7 +42,7 @@ class AuthStore {
 
   login = async (userData) => {
     try {
-      const response = await instance.post("/login", userData);
+      const response = await instance.post('/login', userData);
       this.setUser(response.data.token);
     } catch (error) {
       console.log(error);
@@ -50,8 +50,10 @@ class AuthStore {
   };
 
   logout = () => {
+    // console.log('user trips ---->' + JSON.stringify(this.user.trips));
     this.user = null;
-    AsyncStorage.removeItem("myToken");
+    AsyncStorage.removeItem('myToken');
+
     delete instance.defaults.headers.common.Authorization;
   };
 
