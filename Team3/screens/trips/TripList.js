@@ -7,7 +7,6 @@ import * as Font from "expo-font";
 
 function TripList({ navigation }) {
   const trips = tripStore.getTrips();
-
   const [loaded] = Font.useFonts({
     Helvetica: require("../../assets/fonts/Helvetican.ttf"),
   });
@@ -27,7 +26,7 @@ function TripList({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#e3edf2" }}>
+    <SafeAreaView style={{ backgroundColor: "#e3edf2" , marginBottom: 160}}>
       <Text style={styles.name}>Trips</Text>
       <FlatList
         style={styles.productsList}

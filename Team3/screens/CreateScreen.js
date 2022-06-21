@@ -75,7 +75,7 @@ export function CreateScreen() {
   const handleSubmit = (event) => {
     tripStore.createTrip(trip);
   };
-  console.log(trip);
+  
   return (
     <SafeAreaView style={{ margin: 10 }}>
       <Text style={styles.title}>Choose an image</Text>
