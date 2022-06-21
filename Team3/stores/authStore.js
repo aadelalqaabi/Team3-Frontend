@@ -68,8 +68,6 @@ class AuthStore {
 //   };
 }
 
-
-
 const authStore = new AuthStore();
 authStore.checkForToken();
 export default authStore;
