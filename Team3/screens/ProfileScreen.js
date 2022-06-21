@@ -43,12 +43,7 @@ export function ProfileScreen() {
             <Text style={styles.userName}>{authStore.user.username}</Text>
           </View>
           <View style={styles.edit}>
-            <Button
-              onPress={editProfileButton}
-              title="Edit"
-              color="#841584"
-              // accessibilityLabel="Learn more about this purple button"
-            />
+            <Button onPress={editProfileButton} title="Edit" color="#841584" />
           </View>
         </View>
         <View style={styles.bio}>
