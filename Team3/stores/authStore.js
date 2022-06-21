@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import instance from "./instance";
 import decode from "jwt-decode";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class AuthStore {
   constructor() {
@@ -9,13 +10,13 @@ class AuthStore {
   user = null;
 
   setUser = (token) => {
-    localStorage.setItem("myToken", token);
+    AsyncStorage.setItem("myToken", token);
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
     this.user = decode(token);
   };
 
   checkForToken = () => {
-    const token = localStorage.getItem("myToken");
+    const token = AsyncStorage.getItem("myToken");
     if (token) {
       const currentTime = Date.now();
       const user = decode(token);
@@ -36,7 +37,6 @@ class AuthStore {
     }
   };
 
-  
   signIn = async (userData) => {
     try {
       const response = await instance.post("/signin", userData);
@@ -48,7 +48,7 @@ class AuthStore {
 
   signOut = () => {
     this.user = null;
-    localStorage.removeItem("myToken");
+    AsyncStorage.removeItem("myToken");
     delete instance.defaults.headers.common.Authorization;
   };
 
@@ -64,8 +64,6 @@ class AuthStore {
   };
 }
 
-
-
 const authStore = new AuthStore();
-authStore.checkForToken();
+//authStore.checkForToken();
 export default authStore;
