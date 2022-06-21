@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
-import instance from "./instance";
+import { instance } from "./instance";
 import decode from "jwt-decode";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class AuthStore {
   constructor() {
@@ -10,15 +10,15 @@ class AuthStore {
   user = null;
 
   setUser = async (token) => {
-    await AsyncStorage.setItem('myToken', JSON.stringify(token));
+    await AsyncStorage.setItem("myToken", JSON.stringify(token));
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
     this.user = decode(token);
   };
 
   checkForToken = async () => {
     let token = null;
-    const jsonValue = await AsyncStorage.getItem('myToken')
-    if(jsonValue !== null) token = JSON.parse(jsonValue);
+    const jsonValue = await AsyncStorage.getItem("myToken");
+    if (jsonValue !== null) token = JSON.parse(jsonValue);
 
     if (token) {
       const currentTime = Date.now();
@@ -40,7 +40,6 @@ class AuthStore {
     }
   };
 
-  
   login = async (userData) => {
     try {
       const response = await instance.post("/login", userData);
@@ -56,16 +55,16 @@ class AuthStore {
     delete instance.defaults.headers.common.Authorization;
   };
 
-//   updateUser = async (updatedUser, userId, recipeId) => {
-//     try {
-//       const res = await instance.put(
-//         `/${userId}/recipes/${recipeId}`,
-//         updatedUser
-//       );
-//     } catch (error) {
-//       console.log("RecipeStore-> updatedRecipe-> error", error);
-//     }
-//   };
+  //   updateUser = async (updatedUser, userId, recipeId) => {
+  //     try {
+  //       const res = await instance.put(
+  //         `/${userId}/recipes/${recipeId}`,
+  //         updatedUser
+  //       );
+  //     } catch (error) {
+  //       console.log("RecipeStore-> updatedRecipe-> error", error);
+  //     }
+  //   };
 }
 
 const authStore = new AuthStore();
