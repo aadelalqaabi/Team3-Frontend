@@ -1,22 +1,45 @@
+import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ProfileScreen } from "./screens/ProfileScreen";
 import RootNavigator from "./index/home";
 import { CreateScreen } from "./screens/CreateScreen";
-import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { BlurView } from "expo-blur";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
+import Login from "./screens/authScreens/Login";
+import Register from "./screens/authScreens/Register";
+import AuthButtons from "./screens/authScreens/AuthButtons";
+import { observer } from "mobx-react";
+import authStore from "./stores/authStore";
+
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-export default function App() {
+
+function App() {
+  const checkUser = authStore.user; 
   return (
-    <NavigationContainer>
-      <TabBar />
-    </NavigationContainer>
+  
+
+
+    <NativeBaseProvider>
+      <NavigationContainer>
+        {
+        checkUser ? ( 
+          <TabBar />
+        ) : ( 
+          <Stack.Navigator>
+              <Stack.Screen name="Set Up Account" component={AuthButtons} />
+              <Stack.Screen name="Register" component={Register} />
+              <Stack.Screen name="Login" component={Login} />
+          </Stack.Navigator>
+        )}
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
 }
-
 function TabBar() {
   return (
     <Tab.Navigator
@@ -97,3 +120,5 @@ function TabBar() {
     </Tab.Navigator>
   );
 }
+
+export default observer(App);
