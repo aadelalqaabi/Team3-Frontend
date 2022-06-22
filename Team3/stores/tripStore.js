@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import authStore from "./authStore";
 import { instance } from "./instance";
 
@@ -23,7 +23,9 @@ class TripStore {
   fetchTrips = async () => {
     try {
       const response = await instance.get("/trips");
-      this.trips = response.data;
+      runInAction(() => {
+        this.trips = response.data;
+      });
     } catch (error) {
       console.log("here  ", error);
     }

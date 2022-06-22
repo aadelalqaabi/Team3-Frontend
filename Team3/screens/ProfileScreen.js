@@ -6,38 +6,43 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Logout from './authScreens/Logout';
-import tripStore from '../stores/tripStore';
-import authStore from '../stores/authStore';
-import { Trip } from './trips/Trip';
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import Logout from "./authScreens/Logout";
+import tripStore from "../stores/tripStore";
+import authStore from "../stores/authStore";
+import Trip from "./trips/Trip";
+import { observer } from "mobx-react";
+import { baseURL } from "../stores/instance";
 
-export function ProfileScreen() {
-  let trips = authStore.user.trips;
-  trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
-  trips = trips.map((trip) => (
-    <Trip
-      trip={trip}
-      onPress={() => {
-        navigation.navigate('TripDetails', { id: trip._id });
-      }}
-    />
-  ));
+function ProfileScreen() {
+  const trips = tripStore.trips
+    .filter((trip) => trip.userId._id === authStore.user.id)
+    .map((trip) => (
+      <Trip
+        key={trip._id}
+        trip={trip}
+        onPress={() => {
+          navigation.navigate("TripDetails", { id: trip._id });
+        }}
+      />
+    ));
   const navigation = useNavigation();
   const editProfileButton = () => {
-    navigation.navigate('Edit');
-    console.log(trips);
+    navigation.navigate("Edit");
   };
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         <View style={styles.imageUserNameEdit}>
           <View style={styles.imageUserName}>
             <Image
               style={styles.profileImage}
               source={{
-                uri: 'https://reactnative.dev/img/tiny_logo.png',
+                uri: baseURL + authStore.user.image,
               }}
             />
             <Text style={styles.userName}>{authStore.user.username}</Text>
@@ -47,7 +52,7 @@ export function ProfileScreen() {
           </View>
         </View>
         <View style={styles.bio}>
-          <Text style={styles.bioText}>bio</Text>
+          <Text style={styles.bioText}>{authStore.user.bio}</Text>
         </View>
         <View>{trips}</View>
         <Logout />
@@ -55,20 +60,21 @@ export function ProfileScreen() {
     </SafeAreaView>
   );
 }
+export default observer(ProfileScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 12,
   },
   imageUserNameEdit: {
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    flexDirection: 'row',
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    flexDirection: "row",
   },
   imageUserName: {
-    justifyContent: 'flex-Start',
-    alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: "flex-Start",
+    alignItems: "center",
+    flexDirection: "row",
   },
 
   profileImage: {
@@ -81,15 +87,15 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   edit: {
-    backgroundColor: 'pink',
+    backgroundColor: "pink",
     borderRadius: 10,
   },
   bio: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     margin: 25,
     padding: 10,
-    borderColor: 'black',
+    borderColor: "black",
     borderWidth: 1,
   },
   bioText: {

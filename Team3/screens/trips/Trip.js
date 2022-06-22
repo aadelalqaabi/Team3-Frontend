@@ -1,3 +1,4 @@
+import { observer } from "mobx-react";
 import React from "react";
 import {
   Text,
@@ -7,11 +8,23 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
+import * as Font from "expo-font";
 import { baseURL } from "../../stores/instance";
 
-export function Trip({ trip, onPress }) {
+function Trip({ trip, onPress }) {
+  const [loaded] = Font.useFonts({
+    cream: require("../../assets/fonts/cream.ttf"),
+  });
+  if (!loaded) {
+    return null;
+  }
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={onPress}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+    >
       <Image style={styles.thumb} source={{ uri: `${baseURL}${trip.image}` }} />
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{trip.title}</Text>
@@ -19,6 +32,8 @@ export function Trip({ trip, onPress }) {
     </TouchableOpacity>
   );
 }
+
+export default observer(Trip);
 
 const styles = StyleSheet.create({
   card: {
@@ -34,7 +49,7 @@ const styles = StyleSheet.create({
       width: 0,
     },
     elevation: 1,
-    marginVertical: 20,
+    marginVertical: 5,
   },
   thumb: {
     alignSelf: "center",
@@ -43,18 +58,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     margin: 10,
     zIndex: -1,
-    opacity: 0.8,
+    opacity: 0.7,
   },
   infoContainer: {
     position: "absolute",
     alignSelf: "flex-end",
-    padding: 30,
+    paddingLeft: 28,
+    paddingBottom: 22
   },
   name: {
-    fontSize: 28,
-    fontFamily: "Cochin",
+    fontSize: 34,
     fontWeight: "bold",
-    color: "white",
+    color: "#fffffc",
     shadowOpacity: 1,
     shadowRadius: 4,
     shadowColor: "black",
@@ -62,10 +77,6 @@ const styles = StyleSheet.create({
       height: 1,
       width: 1,
     },
-  },
-  price: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 8,
+    fontFamily: "cream",
   },
 });
