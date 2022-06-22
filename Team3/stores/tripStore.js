@@ -8,6 +8,7 @@ class TripStore {
   }
 
   trips = [];
+  owners = [];
 
   createTrip = async (newTrip) => {
     try {
@@ -57,6 +58,21 @@ class TripStore {
 
   getTrips = () => {
     return this.trips;
+  };
+
+  fetchOwners = async () => {
+    try {
+      const res = await instance.get(`/users` );
+      this.owners = res.data;
+    }
+   catch (error) {
+      console.error(error);
+    }
+  };
+
+  getOwner = (ownerId) => {
+    const owner = this.owners.find((o) => (o._id === ownerId));
+    return owner;
   };
 }
 

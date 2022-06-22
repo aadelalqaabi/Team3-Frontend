@@ -98,7 +98,7 @@ function TabBar() {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileNavigator}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused, tintColor }) => (

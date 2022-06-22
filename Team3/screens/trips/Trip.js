@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import { baseURL } from "../../stores/instance";
+import tripStore from "../../stores/tripStore";
+import { useNavigation } from '@react-navigation/native';
 
 function Trip({ trip, onPress }) {
   const [loaded] = Font.useFonts({
