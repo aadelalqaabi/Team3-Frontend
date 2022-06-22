@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ProfileScreen } from './screens/ProfileScreen';
 import RootNavigator from './index/home';
+import ProfileNavigator from './index/ProfileNavigator';
 import { CreateScreen } from './screens/CreateScreen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
@@ -96,7 +97,7 @@ function TabBar() {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileNavigator}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused, tintColor }) => (
