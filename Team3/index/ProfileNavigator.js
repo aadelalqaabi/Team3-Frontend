@@ -1,11 +1,11 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import TripList from '../screens/trips/TripList';
+import EditScreen from '../screens/EditScreen';
+import { ProfileScreen } from '../screens/ProfileScreen';
+import OwnerScreen from '../screens/trips/OwnerScreen';
 import TripDetails from '../screens/trips/TripDetails';
 import tripStore from '../stores/tripStore';
-import Edit from '../screens/EditScreen';
-import OwnerScreen from '../screens/trips/OwnerScreen';
 
-const RootNavigator = () => {
+const ProfileNavigator = () => {
   const { Navigator, Screen } = createStackNavigator();
   return (
     <Navigator
@@ -13,9 +13,8 @@ const RootNavigator = () => {
         headerShown: false,
       }}
     >
-      <Screen name="TripList" component={TripList} />
-      <Screen name="Owner" component={OwnerScreen} />
-
+      <Screen name="Profile" component={ProfileScreen} />
+      <Screen name="Edit" component={EditScreen} />
       <Screen
         name="TripDetails"
         component={TripDetails}
@@ -26,8 +25,9 @@ const RootNavigator = () => {
           };
         }}
       />
+      <Screen name="Owner" component={OwnerScreen} />
     </Navigator>
   );
 };
 
-export default RootNavigator;
+export default ProfileNavigator;
