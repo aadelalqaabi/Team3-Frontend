@@ -18,6 +18,7 @@ export function ProfileScreen() {
   trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
   trips = trips.map((trip) => (
     <Trip
+      key={trip._id}
       trip={trip}
       onPress={() => {
         navigation.navigate('TripDetails', { id: trip._id });
