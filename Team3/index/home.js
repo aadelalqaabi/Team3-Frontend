@@ -3,6 +3,7 @@ import TripList from '../screens/trips/TripList';
 import TripDetails from '../screens/trips/TripDetails';
 import tripStore from '../stores/tripStore';
 import Edit from '../screens/EditScreen';
+import OwnerScreen from '../screens/trips/OwnerScreen';
 
 const RootNavigator = () => {
   const { Navigator, Screen } = createStackNavigator();
@@ -14,6 +15,7 @@ const RootNavigator = () => {
     >
       <Screen name="TripList" component={TripList} />
       <Screen name="Edit" component={Edit} />
+      <Screen name="Owner" component={OwnerScreen}/>
 
       <Screen
         name="TripDetails"

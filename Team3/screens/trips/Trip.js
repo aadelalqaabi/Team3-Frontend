@@ -8,15 +8,23 @@ import {
   Button,
 } from "react-native";
 import { baseURL } from "../../stores/instance";
+import tripStore from "../../stores/tripStore";
+import { useNavigation } from '@react-navigation/native';
 
 export function Trip({ trip, onPress }) {
+  const navigation = useNavigation();
+  const owner = trip.userId;
+  
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
-      <Image style={styles.thumb} source={{ uri: `${baseURL}${trip.image}` }} />
-      <View style={styles.infoContainer}>
-        <Text style={styles.name}>{trip.title}</Text>
-      </View>
-    </TouchableOpacity>
+  <View>
+      <Button onPress={() => {navigation.navigate('Owner', {owner: owner})}} title={owner.username} color="#841584" />
+      <TouchableOpacity style={styles.card} onPress={onPress}>
+        <Image style={styles.thumb} source={{ uri: `${baseURL}${trip.image}` }} />
+        <View style={styles.infoContainer}>
+          <Text style={styles.name}>{trip.title}</Text>
+        </View>
+      </TouchableOpacity>
+  </View>
   );
 }
 
