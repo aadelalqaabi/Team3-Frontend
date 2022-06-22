@@ -57,16 +57,16 @@ class AuthStore {
     delete instance.defaults.headers.common.Authorization;
   };
 
-  //   updateUser = async (updatedUser, userId, recipeId) => {
-  //     try {
-  //       const res = await instance.put(
-  //         `/${userId}/recipes/${recipeId}`,
-  //         updatedUser
-  //       );
-  //     } catch (error) {
-  //       console.log("RecipeStore-> updatedRecipe-> error", error);
-  //     }
-  //   };
+  updateUser = async (updatedUser) => {
+    try {
+      const formData = new FormData();
+      for (const key in updatedUser) formData.append(key, updatedUser[key]);
+      console.log(this.user.id);
+      const res = await instance.put(`/${this.user.id}`, formData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 
 const authStore = new AuthStore();
