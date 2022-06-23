@@ -39,6 +39,7 @@ function Trip({ trip, onPress }) {
     return null;
   }
   return (
+
     <View>
       <TouchableOpacity
         style={styles.profile}
@@ -67,6 +68,7 @@ function Trip({ trip, onPress }) {
         </View>
       </TouchableOpacity>
     </View>
+
   );
 }
 
@@ -133,5 +135,6 @@ const styles = StyleSheet.create({
   profile: {
     flexDirection: "row",
     padding: 10,
+
   },
 });

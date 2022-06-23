@@ -1,4 +1,5 @@
 import {
+
   Text,
   View,
   SafeAreaView,
@@ -12,8 +13,12 @@ import tripStore from "../../stores/tripStore";
 import { Trip } from "../trips/Trip";
 import OwnerProfileTrip from "./OwnerProfileTrip";
 
-export default function OwnerScreen({ route, navigation }) {
-  const { owner } = route.params;
+  function OwnerScreen({route, navigation}) {
+    const { owner } = route.params;
+    
+    let trips = owner.trips;
+    trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
+
 
   let trips = owner.trips;
   trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
@@ -112,3 +117,4 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
 });
+

@@ -1,12 +1,15 @@
+
 import { observer } from "mobx-react";
 import React, { useRef, useState } from "react";
 import {
   Alert,
+
   Text,
   Image,
   View,
   StyleSheet,
   TouchableOpacity,
+
 } from "react-native";
 import * as Font from "expo-font";
 import { baseURL } from "../../stores/instance";
@@ -100,6 +103,7 @@ function OwnerTrip({ trip, onPress }) {
 
 export default observer(OwnerTrip);
 
+
 const styles = StyleSheet.create({
   card: {
     display: "flex",
@@ -114,6 +118,7 @@ const styles = StyleSheet.create({
       width: 0,
     },
     elevation: 1,
+
     marginVertical: 5,
   },
   thumb: {
@@ -124,10 +129,12 @@ const styles = StyleSheet.create({
     margin: 10,
     zIndex: -1,
     opacity: 0.7,
+
   },
   infoContainer: {
     position: "absolute",
     alignSelf: "flex-end",
+
     paddingLeft: 28,
     paddingBottom: 22,
   },
@@ -135,6 +142,14 @@ const styles = StyleSheet.create({
     fontSize: 34,
     fontWeight: "bold",
     color: "#fffffc",
+
+    padding: 30,
+  },
+  name: {
+    fontSize: 28,
+    fontFamily: "Cochin",
+    fontWeight: "bold",
+    color: "white",
     shadowOpacity: 1,
     shadowRadius: 4,
     shadowColor: "black",
@@ -142,9 +157,11 @@ const styles = StyleSheet.create({
       height: 1,
       width: 1,
     },
+
     fontFamily: "cream",
   },
   edit: {
     borderRadius: 10,
   },
+
 });
