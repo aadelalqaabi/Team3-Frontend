@@ -11,21 +11,13 @@ import { baseURL } from "../../stores/instance";
 import tripStore from "../../stores/tripStore";
 import { useNavigation } from '@react-navigation/native';
 
-export function Trip({ trip, onPress }) {
-  const navigation = useNavigation();
-  const owner = trip.userId;
-  
+export function OwnerTrip({ trip, onPress }) {
   return (
   <View>
-      <TouchableOpacity style={styles.profile} onPress={() => {navigation.navigate('Owner', {owner: owner})}}>
-        <Image style={styles.profileImage} source={{ uri: `${baseURL}${owner.image}` }}/>
-        <Text style={styles.profileName}>{owner.username}</Text>
-      </TouchableOpacity>
-      {/* <Button onPress={() => {navigation.navigate('Owner', {owner: owner})}} title={owner.username} color="#841584" /> */}
       <TouchableOpacity style={styles.card} onPress={onPress}>
         <Image style={styles.thumb} source={{ uri: `${baseURL}${trip.image}` }} />
         <View style={styles.infoContainer}>
-          <Text style={styles.name}>{trip.title}</Text>
+            <Text style={styles.name}>{trip.title}</Text>
         </View>
       </TouchableOpacity>
   </View>
@@ -50,9 +42,11 @@ const styles = StyleSheet.create({
   },
   thumb: {
     alignSelf: "center",
-    width: 384,
-    height: 216,
-    borderRadius: 20,
+    // width: 384,
+    // height: 216,
+    width: 180,
+    height: 106,
+    borderRadius: 0,
     margin: 10,
     zIndex: -1,
     opacity: 0.8,
@@ -79,17 +73,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 8,
-  },
-  profileImage: {
-    width: 25,
-    height: 25,
-    borderRadius: 40,
-  },
-  profile: { 
-    flexDirection: "row",
-  },
-  profileName: {
-    fontSize: 20,
-    marginLeft: 5,
-  },
+  }
 });

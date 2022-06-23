@@ -5,28 +5,31 @@ import {
     Button,
     StyleSheet,
     Image,
-    ScrollView,
+    ScrollView, FlatList
   } from 'react-native';
   import tripStore from "../../stores/tripStore";
   import { Trip } from "../trips/Trip";
+  import { OwnerTrip } from "../trips/OwnerTrip";
+  import { observer } from "mobx-react";
 
-  export default function OwnerScreen({route, navigation}) {
+  function OwnerScreen({route, navigation}) {
     const { owner } = route.params;
     
     let trips = owner.trips;
     trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
-    trips = trips.map((trip) => (
-      <Trip
-        key={trip._id}
-        trip={trip}
-        onPress={() => {
-          navigation.navigate('TripDetails', { id: trip._id });
-        }}
-      />
-    ));
+
+    function renderTrip({ item: trip }) {
+      return (
+        <OwnerTrip
+          trip={trip}
+          onPress={() => {
+            navigation.navigate("TripDetails", { id: trip._id });
+          }}
+        />
+      );
+    }
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
                 <View style={styles.imageUserNameEdit}>
                     <View style={styles.imageUserName}>
                         <Image
@@ -41,11 +44,21 @@ import {
                 <View style={styles.bio}>
                     <Text style={styles.bioText}>bio</Text>
                 </View>
-                <View>{trips}</View>
+                <ScrollView>
+                <FlatList
+                  data={trips}
+                  renderItem={renderTrip}
+                  //Setting the number of column
+                  numColumns={2}
+                  keyExtractor={(trip, index) => index}
+                />
+                {/* <View>{trips}</View> */}
             </ScrollView>
         </SafeAreaView>
     );
   }
+
+  export default observer(OwnerScreen)
   const styles = StyleSheet.create({
     container: {
       flex: 1,

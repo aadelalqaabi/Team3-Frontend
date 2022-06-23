@@ -5,26 +5,36 @@ import {
   Button,
   StyleSheet,
   Image,
-  ScrollView,
+  ScrollView,FlatList
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Logout from './authScreens/Logout';
 import tripStore from '../stores/tripStore';
 import authStore from '../stores/authStore';
-import { Trip } from './trips/Trip';
+import { OwnerTrip } from './trips/OwnerTrip';
 
 export function ProfileScreen() {
   let trips = authStore.user.trips;
   trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
-  trips = trips.map((trip) => (
-    <Trip
-      key={trip._id}
-      trip={trip}
-      onPress={() => {
-        navigation.navigate('TripDetails', { id: trip._id });
-      }}
-    />
-  ));
+  // trips = trips.map((trip) => (
+  //   <OwnerTrip
+  //     key={trip._id}
+  //     trip={trip}
+  //     onPress={() => {
+  //       navigation.navigate('TripDetails', { id: trip._id });
+  //     }}
+  //   />
+  // ));
+  function renderTrip({ item: trip }) {
+    return (
+      <OwnerTrip
+        trip={trip}
+        onPress={() => {
+          navigation.navigate("TripDetails", { id: trip._id });
+        }}
+      />
+    );
+  }
   const navigation = useNavigation();
   const editProfileButton = () => {
     navigation.navigate('Edit');
@@ -32,15 +42,17 @@ export function ProfileScreen() {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      
         <View style={styles.imageUserNameEdit}>
           <View style={styles.imageUserName}>
-            <Image
-              style={styles.profileImage}
-              source={{
-                uri: 'https://reactnative.dev/img/tiny_logo.png',
-              }}
-            />
+            <View>
+              <Image
+                style={styles.profileImage}
+                source={{
+                  uri: 'https://reactnative.dev/img/tiny_logo.png',
+                }}
+              />
+            </View>
             <Text style={styles.userName}>{authStore.user.username}</Text>
           </View>
           <View style={styles.edit}>
@@ -48,9 +60,16 @@ export function ProfileScreen() {
           </View>
         </View>
         <View style={styles.bio}>
-          <Text style={styles.bioText}>bio</Text>
+          <Text style={styles.bioText}>{authStore.user.bio}</Text>
         </View>
-        <View>{trips}</View>
+        <ScrollView>
+        <FlatList
+          data={trips}
+          renderItem={renderTrip}
+          //Setting the number of column
+          numColumns={2}
+          keyExtractor={(trip, index) => index}
+        />
         <Logout />
       </ScrollView>
     </SafeAreaView>
@@ -66,11 +85,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     flexDirection: 'row',
   },
-  imageUserName: {
-    justifyContent: 'flex-Start',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
+  // imageUserName: {
+  //   justifyContent: 'flex-Start',
+  //   alignItems: 'center',
+  //   flexDirection: 'row',
+  // },
 
   profileImage: {
     width: 75,
@@ -88,12 +107,25 @@ const styles = StyleSheet.create({
   bio: {
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 25,
+    textAlign: "justify",
+    margin: 12,
     padding: 10,
-    borderColor: 'black',
-    borderWidth: 1,
   },
   bioText: {
-    fontSize: 20,
+    fontSize: 13,
+    color: "grey"
   },
+  tripList: {
+    grid: 2,
+    gridtemplate: "c1 c2",
+  },
+  imageCard:{
+    // alignSelf: "center",
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    margin: 10,
+    zIndex: -1,
+    opacity: 0.8,
+  }
 });
