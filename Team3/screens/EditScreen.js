@@ -6,17 +6,15 @@ import {
   StyleSheet,
   Image,
   TextInput,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedbackBase,
-  Keyboard,
   Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import authStore from "../stores/authStore";
+import { observer } from "mobx-react";
 
-export default function EditScreen() {
+function EditScreen() {
   const [image, setImage] = useState(null);
   const [user, setUser] = useState();
   const navigation = useNavigation();
@@ -70,7 +68,7 @@ export default function EditScreen() {
     });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     await authStore.updateUser(user);
   };
 
@@ -83,13 +81,11 @@ export default function EditScreen() {
         <View style={styles.addImage}>
           <Text style={styles.title}>Choose an image</Text>
           <View>
-            {image === null ? (
+            {image === null && (
               <Button
                 title="Pick an image from camera roll"
                 onPress={pickImage}
               />
-            ) : (
-              <></>
             )}
 
             {image && (
@@ -122,6 +118,7 @@ export default function EditScreen() {
     </SafeAreaView>
   );
 }
+export default observer(EditScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,

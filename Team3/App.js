@@ -1,17 +1,17 @@
-import { NativeBaseProvider } from 'native-base';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ProfileScreen } from './screens/ProfileScreen';
-import RootNavigator from './index/home';
-import { CreateScreen } from './screens/CreateScreen';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
-import Login from './screens/authScreens/Login';
-import Register from './screens/authScreens/Register';
-import AuthButtons from './screens/authScreens/AuthButtons';
-import { observer } from 'mobx-react';
-import authStore from './stores/authStore';
+import { NativeBaseProvider } from "native-base";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import RootNavigator from "./index/home";
+import { CreateScreen } from "./screens/CreateScreen";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Login from "./screens/authScreens/Login";
+import Register from "./screens/authScreens/Register";
+import AuthButtons from "./screens/authScreens/AuthButtons";
+import { observer } from "mobx-react";
+import authStore from "./stores/authStore";
+import { StatusBar } from "expo-status-bar";
+import ProfileNavigator from "./index/ProfileNavigator";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,6 +21,7 @@ function App() {
   return (
     <NativeBaseProvider>
       <NavigationContainer>
+        <StatusBar style="dark" />
         {checkUser ? (
           <TabBar />
         ) : (
@@ -40,10 +41,10 @@ function TabBar() {
       initialRouteName="Home"
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: '#f3f6fe',
-          borderTopLeftRadius: 30,
-          borderTopRightRadius: 30,
-          position: 'absolute',
+          backgroundColor: "#fffffc",
+          marginBottom: 10,
+          marginLeft: 5,
+          marginRight: 5,
         },
         headerShown: false,
       }}
@@ -54,16 +55,16 @@ function TabBar() {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused, tintColor }) => (
-            <Ionicons
+            <MaterialCommunityIcons
               name="home"
               color={color}
-              size={35}
-              style={{ paddingTop: 13 }}
+              size={45}
+              style={{ position: "absolute", paddingTop: "20%" }}
             />
           ),
 
-          tabBarActiveTintColor: '#ff844b',
-          tabBarInactiveTintColor: '#4e7d96',
+          tabBarActiveTintColor: "#1e2029",
+          tabBarInactiveTintColor: "#8D9C98",
         }}
       />
       <Tab.Screen
@@ -72,17 +73,17 @@ function TabBar() {
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused, tintColor }) => (
-            <Ionicons
-              name="md-add-circle-sharp"
-              size={80}
-              color={color}
+            <MaterialCommunityIcons
+              name="plus-circle"
+              size={85}
+              color="black"
               style={{
-                paddingTop: '5%',
-                position: 'absolute',
-                paddingBottom: 45,
+                paddingTop: "20%",
+                position: "absolute",
+                paddingBottom: "28%",
                 shadowOpacity: 0.2,
                 shadowRadius: 5,
-                shadowColor: 'black',
+                shadowColor: "black",
                 shadowOffset: {
                   height: 0,
                   width: 0,
@@ -90,25 +91,24 @@ function TabBar() {
               }}
             />
           ),
-          tabBarActiveTintColor: '#ff844b',
-          tabBarInactiveTintColor: '#4e7d96',
+          tabBarInactiveTintColor: "#8D9C98",
         }}
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileNavigator}
         options={{
           tabBarShowLabel: false,
           tabBarIcon: ({ color, focused, tintColor }) => (
             <MaterialCommunityIcons
               name="account"
-              size={40}
+              size={45}
               color={color}
-              style={{ paddingTop: 13 }}
+              style={{ position: "absolute", paddingTop: "20%" }}
             />
           ),
-          tabBarActiveTintColor: '#ff844b',
-          tabBarInactiveTintColor: '#4e7d96',
+          tabBarActiveTintColor: "#1e2029",
+          tabBarInactiveTintColor: "#8D9C98",
         }}
       />
     </Tab.Navigator>

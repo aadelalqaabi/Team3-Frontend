@@ -1,14 +1,14 @@
 import React from "react";
 import { FlatList, SafeAreaView, StyleSheet, Text } from "react-native";
 import tripStore from "../../stores/tripStore";
-import { Trip } from "./Trip";
+import Trip from "./Trip";
 import { observer } from "mobx-react";
 import * as Font from "expo-font";
 
 function TripList({ navigation }) {
   const trips = tripStore.getTrips();
   const [loaded] = Font.useFonts({
-    Helvetica: require("../../assets/fonts/Helvetican.ttf"),
+    PoetsenOne: require("../../assets/fonts/PoetsenOne.ttf"),
   });
   if (!loaded) {
     return null;
@@ -26,13 +26,15 @@ function TripList({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#e3edf2" , marginBottom: 160}}>
-      <Text style={styles.name}>Trips</Text>
+    <SafeAreaView style={{ backgroundColor: "#fffffc" }}>
+      <Text style={styles.name}>Tripper</Text>
       <FlatList
         style={styles.productsList}
         contentContainerStyle={styles.productsListContainer}
         data={trips}
         renderItem={renderTrip}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
     </SafeAreaView>
   );
@@ -42,19 +44,21 @@ export default observer(TripList);
 
 const styles = StyleSheet.create({
   productsList: {
-    backgroundColor: "#e8eef1",
+    backgroundColor: "#fffffc",
     height: "100%",
+    width: "100%",
   },
   productsListContainer: {
-    backgroundColor: "#e8eef1",
-    paddingVertical: 8,
-    marginHorizontal: 8,
+    backgroundColor: "#fffffc",
+    marginHorizontal: 10,
   },
   name: {
-    fontSize: 40,
-    fontFamily: "Helvetica",
+    fontSize: 35,
+    fontFamily: "PoetsenOne",
     color: "black",
-    marginTop: 30,
-    marginLeft: 30,
+    marginTop: 8,
+    marginLeft: 32,
+    paddingTop: 4,
+    paddingBottom: 12,
   },
 });

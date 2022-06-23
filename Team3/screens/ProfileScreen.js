@@ -5,15 +5,19 @@ import {
   Button,
   StyleSheet,
   Image,
-  ScrollView,FlatList
+  ScrollView,
+  FlatList
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Logout from './authScreens/Logout';
-import tripStore from '../stores/tripStore';
-import authStore from '../stores/authStore';
-import { OwnerTrip } from './trips/OwnerTrip';
+import { useNavigation } from "@react-navigation/native";
+import Logout from "./authScreens/Logout";
+import tripStore from "../stores/tripStore";
+import authStore from "../stores/authStore";
+import Trip from "./trips/Trip";
+import { observer } from "mobx-react";
+import { baseURL } from "../stores/instance";
 
-export function ProfileScreen() {
+function ProfileScreen() {
+  const navigation = useNavigation();
   let trips = authStore.user.trips;
   trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
   // trips = trips.map((trip) => (
@@ -35,24 +39,23 @@ export function ProfileScreen() {
       />
     );
   }
-  const navigation = useNavigation();
   const editProfileButton = () => {
-    navigation.navigate('Edit');
-    console.log(trips);
+    navigation.navigate("Edit");
   };
   return (
     <SafeAreaView style={styles.container}>
-      
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         <View style={styles.imageUserNameEdit}>
           <View style={styles.imageUserName}>
-            <View>
-              <Image
-                style={styles.profileImage}
-                source={{
-                  uri: 'https://reactnative.dev/img/tiny_logo.png',
-                }}
-              />
-            </View>
+            <Image
+              style={styles.profileImage}
+              source={{
+                uri: baseURL + authStore.user.image,
+              }}
+            />
             <Text style={styles.userName}>{authStore.user.username}</Text>
           </View>
           <View style={styles.edit}>
@@ -75,21 +78,22 @@ export function ProfileScreen() {
     </SafeAreaView>
   );
 }
+export default observer(ProfileScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 12,
   },
   imageUserNameEdit: {
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    flexDirection: 'row',
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    flexDirection: "row",
   },
-  // imageUserName: {
-  //   justifyContent: 'flex-Start',
-  //   alignItems: 'center',
-  //   flexDirection: 'row',
-  // },
+  imageUserName: {
+    justifyContent: "flex-Start",
+    alignItems: "center",
+    flexDirection: "row",
+  },
 
   profileImage: {
     width: 75,
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   edit: {
-    backgroundColor: 'pink',
+    backgroundColor: "pink",
     borderRadius: 10,
   },
   bio: {

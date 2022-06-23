@@ -11,7 +11,7 @@ import {
 import React, { useState, useEffect } from "react";
 import tripStore from "../stores/tripStore";
 import * as ImagePicker from "expo-image-picker";
-
+import Reinput from "reinput";
 export function CreateScreen() {
   const [image, setImage] = useState(null);
   const [trip, setTrip] = useState({
@@ -75,47 +75,64 @@ export function CreateScreen() {
   const handleSubmit = (event) => {
     tripStore.createTrip(trip);
   };
-  
-  return (
-    <SafeAreaView style={{ margin: 10 }}>
-      <Text style={styles.title}>Choose an image</Text>
-      <View>
-        {image === null ? (
-          <Button title="Pick an image from camera roll" onPress={pickImage} />
-        ) : (
-          <></>
-        )}
 
-        {image && (
-          <View>
-            <Image
-              source={{ uri: image }}
-              style={{
-                alignSelf: "center",
-                width: 384,
-                height: 216,
-                borderRadius: 20,
-                margin: 10,
-              }}
-            />
-            <Button title="Choose another image " onPress={pickImage} />
-          </View>
-        )}
-      </View>
-      <Text style={styles.title}>Title</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Type here..."
-        onChangeText={handleChangeTitle}
-      />
-      <Text style={styles.title}>Description</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Type here..."
-        onChangeText={handleChangeDescription}
-      />
-      <Button title="Submit" onPress={handleSubmit} />
-    </SafeAreaView>
+  return (
+    <View style={{ flex: 1, backgroundColor: "#fffffc" }}>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: "#fffffc",
+          marginTop: 70,
+          margin: 20,
+          height: "100%",
+        }}
+      >
+        <Text style={styles.title}>Create a trip</Text>
+        <View style={{ paddingBottom: 30 }}>
+          {image === null ? (
+            <Button title="Choose an image" onPress={pickImage} />
+          ) : (
+            <></>
+          )}
+
+          {image && (
+            <View>
+              <Image
+                source={{ uri: image }}
+                style={{
+                  alignSelf: "center",
+                  width: 384,
+                  height: 216,
+                  borderRadius: 20,
+                  margin: 10,
+                  shadowOpacity: 0.8,
+                  shadowRadius: 4,
+                  shadowColor: "black",
+                  shadowOffset: {
+                    height: 0,
+                    width: 0,
+                  },
+                  elevation: 1,
+                }}
+              />
+              <Button title="Choose another image " onPress={pickImage} />
+            </View>
+          )}
+        </View>
+        <Reinput
+          label="Title"
+          placeholder="Type here..."
+          onChangeText={handleChangeTitle}
+        />
+        <Reinput
+          label="Description"
+          placeholder="Type here..."
+          onChangeText={handleChangeDescription}
+        />
+
+        <Button title="Submit" onPress={handleSubmit} />
+      </SafeAreaView>
+    </View>
   );
 }
 const styles = StyleSheet.create({
@@ -127,7 +144,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 10,
-    marginLeft: 10,
+    marginBottom: 40,
     fontSize: 22,
     fontWeight: "bold",
   },
