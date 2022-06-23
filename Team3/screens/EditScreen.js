@@ -8,14 +8,17 @@ import {
   TextInput,
   Platform,
 } from "react-native";
+import Reinput from "reinput";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import authStore from "../stores/authStore";
 import { observer } from "mobx-react";
+import { baseURL } from "../stores/instance";
+import Toast from "react-native-toast-message";
 
 function EditScreen() {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(baseURL + authStore.user.image);
   const [user, setUser] = useState();
   const navigation = useNavigation();
   const cancelButton = () => {
@@ -69,50 +72,69 @@ function EditScreen() {
   };
 
   const handleSubmit = async () => {
+    Toast.show({
+      type: "success",
+      text1: "Profile Updated",
+    });
+    navigation.navigate("Profile");
     await authStore.updateUser(user);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.cancel}>
-        <Button onPress={cancelButton} title="Cancel" color="#841584" />
+        <Button onPress={cancelButton} title="Cancel" color="black" />
       </View>
       <View style={styles.main}>
-        <View style={styles.addImage}>
-          <Text style={styles.title}>Choose an image</Text>
-          <View>
-            {image === null && (
-              <Button
-                title="Pick an image from camera roll"
-                onPress={pickImage}
-              />
-            )}
+        <View style={{ paddingBottom: 30 }}>
+          {image === null ? (
+            <Button title="Choose an image" onPress={pickImage} />
+          ) : (
+            <></>
+          )}
 
-            {image && (
-              <View>
-                <Image
-                  source={{ uri: image }}
-                  style={{
-                    alignSelf: "center",
-                    width: 384,
-                    height: 216,
-                    borderRadius: 20,
-                    margin: 10,
-                  }}
-                />
-                <Button title="Choose another image " onPress={pickImage} />
-              </View>
-            )}
-          </View>
+          {image && (
+            <View>
+              <Image
+                source={{ uri: image }}
+                style={{
+                  alignSelf: "center",
+                  width: 200,
+                  height: 200,
+                  borderRadius: 100,
+                  margin: 10,
+                  shadowOpacity: 0.8,
+                  shadowRadius: 4,
+                  shadowColor: "black",
+                  shadowOffset: {
+                    height: 0,
+                    width: 0,
+                  },
+                  elevation: 1,
+                }}
+              />
+              <Button title="Choose another image " onPress={pickImage} />
+            </View>
+          )}
         </View>
         <View style={styles.input}>
-          <TextInput
+          <Reinput
+            label="Bio"
             onChangeText={handleChangeBio}
             placeholder="add your bio..."
           />
         </View>
-        <View style={styles.addImage}>
-          <Button onPress={handleSubmit} title="Submit" color="#841584" />
+        <View
+          style={{
+            borderColor: "black",
+            borderWidth: 0.5,
+            width: 150,
+            alignSelf: "center",
+            backgroundColor: "white",
+            borderRadius: "50%",
+          }}
+        >
+          <Button color={"black"} title="Submit" onPress={handleSubmit} />
         </View>
       </View>
     </SafeAreaView>
@@ -122,9 +144,12 @@ export default observer(EditScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 12,
+
+    backgroundColor: "white",
   },
   cancel: {
+    marginRight: 20,
+    marginTop: 20,
     justifyContent: "flex-end",
     alignItems: "flex-end",
   },
@@ -132,6 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 60,
   },
   addImage: {
     backgroundColor: "pink",
@@ -142,10 +168,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   input: {
-    height: 40,
     width: 250,
     margin: 12,
-    borderWidth: 1,
+
     padding: 10,
   },
 });

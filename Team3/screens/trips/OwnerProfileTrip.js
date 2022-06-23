@@ -1,21 +1,13 @@
 import { observer } from "mobx-react";
 import React, { useRef, useState } from "react";
-import {
-  Text,
-  Image,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import * as Font from "expo-font";
 import { baseURL } from "../../stores/instance";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useNavigation } from "@react-navigation/native";
 import tripStore from "../../stores/tripStore";
 
-function Trip({ trip, onPress }) {
-  const owner = trip.userId;
+function OwnerProfileTrip({ trip, onPress }) {
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -39,20 +31,7 @@ function Trip({ trip, onPress }) {
     return null;
   }
   return (
-
     <View>
-      <TouchableOpacity
-        style={styles.profile}
-        onPress={() => {
-          navigation.navigate("Owner", { owner: owner });
-        }}
-      >
-        <Image
-          style={styles.profileImage}
-          source={{ uri: `${baseURL}${owner.image}` }}
-        />
-        <Text style={styles.profileName}>{owner.username}</Text>
-      </TouchableOpacity>
       <TouchableOpacity
         style={styles.card}
         onPress={onPress}
@@ -68,11 +47,10 @@ function Trip({ trip, onPress }) {
         </View>
       </TouchableOpacity>
     </View>
-
   );
 }
 
-export default observer(Trip);
+export default observer(OwnerProfileTrip);
 
 const styles = StyleSheet.create({
   card: {
@@ -120,21 +98,5 @@ const styles = StyleSheet.create({
   },
   edit: {
     borderRadius: 10,
-  },
-  profileName: {
-    justifyContent: "center",
-    paddingTop: 6,
-    fontSize: 20,
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 40,
-    marginRight: 15,
-  },
-  profile: {
-    flexDirection: "row",
-    padding: 10,
-
   },
 });

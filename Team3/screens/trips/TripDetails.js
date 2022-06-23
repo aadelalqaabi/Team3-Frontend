@@ -15,17 +15,28 @@ import tripStore from "../../stores/tripStore";
 function TripDetails({ route }) {
   const trip = tripStore.getTripById(route.params.id);
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <View style={styles.profile}>
+        <Image
+          style={styles.profileImage}
+          source={{ uri: `${baseURL}${trip.userId.image}` }}
+        />
+        <Text style={styles.profileName}>{trip.userId.username}</Text>
+      </View>
+
+      <View>
         <Image
           style={styles.image}
           source={{ uri: `${baseURL}${trip.image}` }}
         />
         <View style={styles.infoContainer}>
           <Text style={styles.name}>{trip.title}</Text>
+        </View>
+
+        <View style={styles.desContainer}>
           <Text style={styles.description}>{trip.description}</Text>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -50,10 +61,39 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   infoContainer: {
+    padding: 50,
+    backgroundColor: "white",
+    borderRadius: 50,
+    position: "absolute",
+    width: "100%",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    paddingTop: 10,
+    height: 150,
+    marginTop: 260,
+    zIndex: 100,
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
+    shadowColor: "grey",
+    shadowOffset: {
+      height: -15,
+    },
+  },
+  desContainer: {
     padding: 16,
+    borderRadius: 50,
+    position: "absolute",
+    width: "100%",
+    alignItems: "flex-start",
+    paddingLeft: 50,
+    justifyContent: "center",
+    paddingTop: 0,
+    height: 150,
+    marginTop: 330,
+    zIndex: 100,
   },
   name: {
-    fontSize: 22,
+    fontSize: 35,
     fontWeight: "bold",
   },
   price: {
@@ -62,9 +102,24 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   description: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "400",
-    color: "#787878",
+    color: "#3d3d3d",
     marginBottom: 16,
+  },
+  profileName: {
+    justifyContent: "center",
+    paddingTop: 6,
+    fontSize: 20,
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    marginRight: 15,
+  },
+  profile: {
+    flexDirection: "row",
+    padding: 10,
   },
 });

@@ -15,23 +15,17 @@ import authStore from "../stores/authStore";
 import Trip from "./trips/Trip";
 import { observer } from "mobx-react";
 import { baseURL } from "../stores/instance";
+import OwnerTrip from "./trips/OwnerTrip";
 
 function ProfileScreen() {
   const navigation = useNavigation();
-  let trips = authStore.user.trips;
-  trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
-  // trips = trips.map((trip) => (
-  //   <OwnerTrip
-  //     key={trip._id}
-  //     trip={trip}
-  //     onPress={() => {
-  //       navigation.navigate('TripDetails', { id: trip._id });
-  //     }}
-  //   />
-  // ));
-  function renderTrip({ item: trip }) {
-    return (
+
+  const trips = tripStore.trips
+    .filter((trip) => trip.userId._id === authStore.user.id)
+    .map((trip) => (
       <OwnerTrip
+        key={trip._id}
+
         trip={trip}
         onPress={() => {
           navigation.navigate("TripDetails", { id: trip._id });
@@ -48,6 +42,12 @@ function ProfileScreen() {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
+        <View
+          style={{ position: "relative", alignSelf: "flex-end", margin: 10 }}
+        >
+          <Logout />
+        </View>
+        <Text style={styles.profile}>Profile</Text>
         <View style={styles.imageUserNameEdit}>
           <View style={styles.imageUserName}>
             <Image
@@ -59,12 +59,19 @@ function ProfileScreen() {
             <Text style={styles.userName}>{authStore.user.username}</Text>
           </View>
           <View style={styles.edit}>
-            <Button onPress={editProfileButton} title="Edit" color="#841584" />
+            <Button
+              onPress={editProfileButton}
+              title="Edit Profile"
+              color="black"
+            />
           </View>
         </View>
         <View style={styles.bio}>
           <Text style={styles.bioText}>{authStore.user.bio}</Text>
         </View>
+
+        <View>{trips}</View>
+
         <ScrollView>
         <FlatList
           data={trips}
@@ -74,6 +81,7 @@ function ProfileScreen() {
           keyExtractor={(trip, index) => index}
         />
         <Logout />
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -92,21 +100,40 @@ const styles = StyleSheet.create({
   imageUserName: {
     justifyContent: "flex-Start",
     alignItems: "center",
-    flexDirection: "row",
+    flexDirection: "column",
+    position: "relative",
+    marginLeft: 2,
   },
-
+  profile: {
+    position: "absolute",
+    alignSelf: "center",
+    marginTop: 25,
+    fontSize: 30,
+  },
   profileImage: {
-    width: 75,
-    height: 75,
-    borderRadius: 40,
+    width: 140,
+    height: 140,
+    borderRadius: 100,
+    marginRight: 130,
+    marginLeft: 130,
+    marginTop: 80,
+    borderWidth: 2,
   },
   userName: {
-    fontSize: 20,
-    marginLeft: 10,
+    fontSize: 30,
+    marginTop: 30,
+    fontWeight: "bold",
   },
   edit: {
-    backgroundColor: "pink",
     borderRadius: 10,
+    position: "absolute",
+    marginTop: 360,
+    marginLeft: "16%",
+    backgroundColor: "#e7e7e7",
+    borderRadius: "50%",
+    justifyContent: "center",
+    paddingLeft: 80,
+    paddingRight: 80,
   },
   bio: {
     justifyContent: 'center',
@@ -114,10 +141,15 @@ const styles = StyleSheet.create({
     textAlign: "justify",
     margin: 12,
     padding: 10,
+
+    paddingTop: 2,
+    paddingBottom: 15,
+    fontSize: 9,
   },
   bioText: {
-    fontSize: 13,
-    color: "grey"
+    fontSize: 17,
+    paddingBottom: 20,
+
   },
   tripList: {
     grid: 2,

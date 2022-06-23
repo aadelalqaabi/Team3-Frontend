@@ -12,7 +12,12 @@ import React, { useState, useEffect } from "react";
 import tripStore from "../stores/tripStore";
 import * as ImagePicker from "expo-image-picker";
 import Reinput from "reinput";
+import { MaterialIcons } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
+import { useNavigation } from "@react-navigation/native";
+
 export function CreateScreen() {
+  const navigation = useNavigation();
   const [image, setImage] = useState(null);
   const [trip, setTrip] = useState({
     title: "",
@@ -73,7 +78,12 @@ export function CreateScreen() {
   };
 
   const handleSubmit = (event) => {
+    Toast.show({
+      type: "success",
+      text1: "Trip Added",
+    });
     tripStore.createTrip(trip);
+    navigation.navigate("TripList");
   };
 
   return (
@@ -90,33 +100,59 @@ export function CreateScreen() {
         <Text style={styles.title}>Create a trip</Text>
         <View style={{ paddingBottom: 30 }}>
           {image === null ? (
-            <Button title="Choose an image" onPress={pickImage} />
+            <View
+              style={{
+                alignSelf: "center",
+                position: "absolute",
+                zIndex: 1,
+                marginTop: 100,
+                borderColor: "black",
+                borderWidth: 0.5,
+                backgroundColor: "#04a9f4",
+                borderRadius: "50%",
+                width: 200,
+                padding: 5,
+                paddingLeft: 30,
+              }}
+            >
+              <MaterialIcons
+                style={{ position: "absolute", marginLeft: 10, marginTop: 8 }}
+                name="file-upload"
+                size={30}
+                color="white"
+              />
+              <Button
+                color={"white"}
+                title="Choose an image"
+                onPress={pickImage}
+              />
+            </View>
           ) : (
             <></>
           )}
 
+          <View>
+            <Image
+              source={{ uri: image }}
+              style={{
+                alignSelf: "center",
+                width: 384,
+                height: 216,
+                borderRadius: 20,
+                margin: 10,
+                shadowOpacity: 0.8,
+                shadowRadius: 4,
+                shadowColor: "black",
+                shadowOffset: {
+                  height: 0,
+                  width: 0,
+                },
+                elevation: 1,
+              }}
+            />
+          </View>
           {image && (
-            <View>
-              <Image
-                source={{ uri: image }}
-                style={{
-                  alignSelf: "center",
-                  width: 384,
-                  height: 216,
-                  borderRadius: 20,
-                  margin: 10,
-                  shadowOpacity: 0.8,
-                  shadowRadius: 4,
-                  shadowColor: "black",
-                  shadowOffset: {
-                    height: 0,
-                    width: 0,
-                  },
-                  elevation: 1,
-                }}
-              />
-              <Button title="Choose another image " onPress={pickImage} />
-            </View>
+            <Button title="Choose another image " onPress={pickImage} />
           )}
         </View>
         <Reinput
@@ -129,8 +165,18 @@ export function CreateScreen() {
           placeholder="Type here..."
           onChangeText={handleChangeDescription}
         />
-
-        <Button title="Submit" onPress={handleSubmit} />
+        <View
+          style={{
+            borderColor: "black",
+            borderWidth: 0.5,
+            width: 150,
+            alignSelf: "center",
+            backgroundColor: "white",
+            borderRadius: "50%",
+          }}
+        >
+          <Button color={"black"} title="Submit" onPress={handleSubmit} />
+        </View>
       </SafeAreaView>
     </View>
   );
