@@ -6,9 +6,6 @@ import {
   StyleSheet,
   Image,
   TextInput,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedbackBase,
-  Keyboard,
   Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";

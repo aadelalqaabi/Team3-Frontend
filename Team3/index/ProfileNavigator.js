@@ -1,9 +1,9 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import EditScreen from '../screens/EditScreen';
-import { ProfileScreen } from '../screens/ProfileScreen';
-import OwnerScreen from '../screens/trips/OwnerScreen';
-import TripDetails from '../screens/trips/TripDetails';
-import tripStore from '../stores/tripStore';
+import { createStackNavigator } from "@react-navigation/stack";
+import EditScreen from "../screens/EditScreen";
+import  ProfileScreen  from "../screens/ProfileScreen";
+import OwnerScreen from "../screens/trips/OwnerScreen";
+import TripDetails from "../screens/trips/TripDetails";
+import tripStore from "../stores/tripStore";
 
 const ProfileNavigator = () => {
   const { Navigator, Screen } = createStackNavigator();

@@ -16,6 +16,7 @@ import { observer } from "mobx-react";
 import { baseURL } from "../stores/instance";
 
 function ProfileScreen() {
+  const navigation = useNavigation();
   const trips = tripStore.trips
     .filter((trip) => trip.userId._id === authStore.user.id)
     .map((trip) => (
@@ -27,7 +28,6 @@ function ProfileScreen() {
         }}
       />
     ));
-  const navigation = useNavigation();
   const editProfileButton = () => {
     navigation.navigate("Edit");
   };

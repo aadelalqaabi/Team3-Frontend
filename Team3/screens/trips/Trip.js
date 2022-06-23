@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
   Text,
   Image,
@@ -10,10 +10,30 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import { baseURL } from "../../stores/instance";
+import DropDownPicker from "react-native-dropdown-picker";
+import { useNavigation } from "@react-navigation/native";
+import Alert from "./Alert";
+import { AlertDialog } from "native-base";
 import tripStore from "../../stores/tripStore";
-import { useNavigation } from '@react-navigation/native';
 
 function Trip({ trip, onPress }) {
+  const navigation = useNavigation();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [toggle, setToggle] = useState(true);
+  const [items, setItems] = useState([
+    { label: "Edit", value: "edit" },
+    { label: "Delete", value: "delete" },
+  ]);
+
+  if (value === "edit") {
+    navigation.navigate("EditTrip", { trip: trip });
+    setValue(null);
+  } else if (value === "delete") {
+    tripStore.deletetrip(trip._id);
+    setValue(null);
+  }
+
   const [loaded] = Font.useFonts({
     cream: require("../../assets/fonts/cream.ttf"),
   });
@@ -27,6 +47,14 @@ function Trip({ trip, onPress }) {
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
     >
+      <DropDownPicker
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+      />
       <Image style={styles.thumb} source={{ uri: `${baseURL}${trip.image}` }} />
       <View style={styles.infoContainer}>
         <Text style={styles.name}>{trip.title}</Text>
@@ -66,7 +94,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "flex-end",
     paddingLeft: 28,
-    paddingBottom: 22
+    paddingBottom: 22,
   },
   name: {
     fontSize: 34,
@@ -80,5 +108,8 @@ const styles = StyleSheet.create({
       width: 1,
     },
     fontFamily: "cream",
+  },
+  edit: {
+    borderRadius: 10,
   },
 });
