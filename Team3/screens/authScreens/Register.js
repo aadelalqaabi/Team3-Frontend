@@ -4,12 +4,12 @@ import { useState } from "react";
 import authStore from "../../stores/authStore";
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
+import Reinput from "reinput";
 
 export default function Register() {
   const [user, setUser] = useState({
     username: "",
     password: "",
-    
   });
 
   const handleChange = (name, value) => {
@@ -20,38 +20,48 @@ export default function Register() {
     authStore.register(user);
   };
   return (
-    <Center>
-      <Text style={styles.title}>Register</Text>
-      <View>
-        <TextInput
-          style={styles.input}
+    <View
+      style={{
+        width: "100%",
+        alignSelf: "center",
+        justifyContent: "center",
+        flex: 1,
+        backgroundColor: "white",
+      }}
+    >
+      <View style={{ width: "60%", alignSelf: "center", marginBottom: 120 }}>
+        <Text style={styles.title}>Register</Text>
+        <Reinput
+          label="Username"
           onChangeText={(text) => {
             handleChange("username", text);
           }}
           placeholder="Enter Username"
         />
-        <TextInput
-          style={styles.input}
+        <Reinput
+          label="Password"
           secureTextEntry={true}
           onChangeText={(text) => {
             handleChange("password", text);
           }}
           placeholder="Enter Password"
         />
-        {console.log("user: " + JSON.stringify(user))}
+
         <Button size={"lg"} colorScheme={"blue"} onPress={handleSubmit}>
           Register
         </Button>
       </View>
-    </Center>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   title: {
+    fontFamily: "PoetsenOne",
     textAlign: "center",
     marginVertical: 8,
     fontSize: 40,
+    marginBottom: 20,
   },
   input: {
     height: 40,

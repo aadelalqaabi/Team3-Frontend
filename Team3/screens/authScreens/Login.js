@@ -3,13 +3,20 @@ import { Center, Square, Circle, Button } from "native-base";
 import { useState } from "react";
 import authStore from "../../stores/authStore";
 import React from "react";
-
+import Reinput from "reinput";
+import { baseURL } from "../../stores/instance";
+import * as Font from "expo-font";
 export default function Login() {
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
-
+  const [loaded] = Font.useFonts({
+    PoetsenOne: require("../../assets/fonts/PoetsenOne.ttf"),
+  });
+  if (!loaded) {
+    return null;
+  }
   const handleChange = (name, value) => {
     setUser({ ...user, [name]: value });
   };
@@ -18,42 +25,56 @@ export default function Login() {
     authStore.login(user);
   };
   return (
-    <Center>
+    <View
+      style={{
+        justifyContent: "center",
+        marginTop: 150,
+        width: "50%",
+        alignSelf: "center",
+      }}
+    >
       <Text style={styles.title}>Login</Text>
       <View>
-        <TextInput
-          style={styles.input}
+        <Reinput
+          label="Username"
           onChangeText={(text) => {
             handleChange("username", text);
           }}
           placeholder="Enter Username"
         />
-        <TextInput
-          style={styles.input}
+        <Reinput
+          label="Password"
           secureTextEntry={true}
           onChangeText={(text) => {
             handleChange("password", text);
           }}
           placeholder="Enter Password"
         />
-        <Button size={"lg"} colorScheme={"green"} onPress={handleSubmit}>
+        <Button
+          colorScheme={"blue"}
+          marginBottom={"5"}
+          size={"lg"}
+          onPress={handleSubmit}
+        >
           Login
         </Button>
       </View>
-    </Center>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   title: {
+    fontFamily: "PoetsenOne",
     textAlign: "center",
     marginVertical: 8,
     fontSize: 40,
+    marginTop: 60,
+    marginBottom: 20,
   },
   input: {
     height: 40,
-    margin: 12,
     borderWidth: 1,
-    padding: 10,
+    padding: 5,
   },
 });

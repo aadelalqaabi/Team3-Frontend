@@ -12,26 +12,38 @@ import { observer } from "mobx-react";
 import authStore from "./stores/authStore";
 import { StatusBar } from "expo-status-bar";
 import ProfileNavigator from "./index/ProfileNavigator";
+import { Appearance } from "react-native";
+import { useState } from "react";
+import Toast from "react-native-toast-message";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function App() {
+  const [theme, setTheme] = useState(Appearance.getColorScheme());
+  Appearance.addChangeListener((scheme) => {
+    setTheme(scheme.colorScheme);
+  });
   const checkUser = authStore.user;
   return (
     <NativeBaseProvider>
       <NavigationContainer>
-        <StatusBar style="dark" />
+        <StatusBar style={theme === "dark" ? "light" : "dark"} />
         {checkUser ? (
           <TabBar />
         ) : (
           <Stack.Navigator>
-            <Stack.Screen name="Set Up Account" component={AuthButtons} />
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="Set Up Account"
+              component={AuthButtons}
+            />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="Login" component={Login} />
           </Stack.Navigator>
         )}
       </NavigationContainer>
+      <Toast />
     </NativeBaseProvider>
   );
 }

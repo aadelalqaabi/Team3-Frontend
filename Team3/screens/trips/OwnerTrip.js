@@ -1,12 +1,12 @@
 import { observer } from "mobx-react";
 import React, { useRef, useState } from "react";
 import {
+  Alert,
   Text,
   Image,
   View,
   StyleSheet,
   TouchableOpacity,
-  Button,
 } from "react-native";
 import * as Font from "expo-font";
 import { baseURL } from "../../stores/instance";
@@ -14,8 +14,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { useNavigation } from "@react-navigation/native";
 import tripStore from "../../stores/tripStore";
 
-function Trip({ trip, onPress }) {
-  const owner = trip.userId;
+function OwnerTrip({ trip, onPress }) {
   const navigation = useNavigation();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
@@ -28,7 +27,15 @@ function Trip({ trip, onPress }) {
     navigation.navigate("EditTrip", { trip: trip });
     setValue(null);
   } else if (value === "delete") {
-    tripStore.deletetrip(trip._id);
+    Alert.alert("Are you sure?", "You're trip will be permanently deleted!", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => tripStore.deletetrip(trip._id) },
+    ]);
+
     setValue(null);
   }
 
@@ -40,18 +47,39 @@ function Trip({ trip, onPress }) {
   }
   return (
     <View>
-      <TouchableOpacity
-        style={styles.profile}
-        onPress={() => {
-          navigation.navigate("Owner", { owner: owner });
+      <DropDownPicker
+        label="..."
+        style={{
+          borderRadius: 30,
+          borderWidth: 0,
+          width: 60,
+          backgroundColor: "#00000000",
+          alignSelf: "flex-end",
+          height: 60,
         }}
-      >
-        <Image
-          style={styles.profileImage}
-          source={{ uri: `${baseURL}${owner.image}` }}
-        />
-        <Text style={styles.profileName}>{owner.username}</Text>
-      </TouchableOpacity>
+        dropDownContainerStyle={{
+          width: 100,
+          position: "absolute",
+          alignSelf: "flex",
+          paddingTop: 10,
+          marginLeft: 300,
+          borderWidth: 0,
+          borderRadius: 10,
+        }}
+        showTickIcon={false}
+        showArrowIcon={false}
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+        placeholder="..."
+        placeholderStyle={{
+          fontSize: 50,
+          paddingBottom: 10,
+        }}
+      />
       <TouchableOpacity
         style={styles.card}
         onPress={onPress}
@@ -70,7 +98,7 @@ function Trip({ trip, onPress }) {
   );
 }
 
-export default observer(Trip);
+export default observer(OwnerTrip);
 
 const styles = StyleSheet.create({
   card: {
@@ -118,20 +146,5 @@ const styles = StyleSheet.create({
   },
   edit: {
     borderRadius: 10,
-  },
-  profileName: {
-    justifyContent: "center",
-    paddingTop: 6,
-    fontSize: 20,
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 40,
-    marginRight: 15,
-  },
-  profile: {
-    flexDirection: "row",
-    padding: 10,
   },
 });

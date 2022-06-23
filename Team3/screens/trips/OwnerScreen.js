@@ -7,8 +7,10 @@ import {
   Image,
   ScrollView,
 } from "react-native";
+import { baseURL } from "../../stores/instance";
 import tripStore from "../../stores/tripStore";
 import { Trip } from "../trips/Trip";
+import OwnerProfileTrip from "./OwnerProfileTrip";
 
 export default function OwnerScreen({ route, navigation }) {
   const { owner } = route.params;
@@ -16,7 +18,7 @@ export default function OwnerScreen({ route, navigation }) {
   let trips = owner.trips;
   trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
   trips = trips.map((trip) => (
-    <Trip
+    <OwnerProfileTrip
       key={trip._id}
       trip={trip}
       onPress={() => {
@@ -26,20 +28,23 @@ export default function OwnerScreen({ route, navigation }) {
   ));
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         <View style={styles.imageUserNameEdit}>
           <View style={styles.imageUserName}>
             <Image
               style={styles.profileImage}
               source={{
-                uri: "https://reactnative.dev/img/tiny_logo.png",
+                uri: `${baseURL}${owner.image}`,
               }}
             />
             <Text style={styles.userName}>{owner.username}</Text>
           </View>
         </View>
         <View style={styles.bio}>
-          <Text style={styles.bioText}>bio</Text>
+          <Text style={styles.bioText}>{owner.bio}</Text>
         </View>
         <View>{trips}</View>
       </ScrollView>
@@ -59,31 +64,51 @@ const styles = StyleSheet.create({
   imageUserName: {
     justifyContent: "flex-Start",
     alignItems: "center",
-    flexDirection: "row",
+    flexDirection: "column",
+    position: "relative",
+    marginLeft: 2,
   },
-
+  profile: {
+    position: "absolute",
+    alignSelf: "center",
+    marginTop: 25,
+    fontSize: 30,
+  },
   profileImage: {
-    width: 75,
-    height: 75,
-    borderRadius: 40,
+    width: 140,
+    height: 140,
+    borderRadius: 100,
+    marginRight: 130,
+    marginLeft: 130,
+    marginTop: 120,
+    borderWidth: 2,
   },
   userName: {
-    fontSize: 20,
-    marginLeft: 10,
+    fontSize: 30,
+    marginTop: 30,
+    fontWeight: "bold",
   },
   edit: {
-    backgroundColor: "pink",
     borderRadius: 10,
+    position: "absolute",
+    marginTop: 400,
+    marginLeft: "16%",
+    backgroundColor: "#e7e7e7",
+    borderRadius: "50%",
+    justifyContent: "center",
+    paddingLeft: 80,
+    paddingRight: 80,
   },
   bio: {
     justifyContent: "center",
     alignItems: "center",
     margin: 25,
     padding: 10,
-    borderColor: "black",
-    borderWidth: 1,
+    paddingTop: 2,
+    paddingBottom: 15,
+    fontSize: 4,
   },
   bioText: {
-    fontSize: 20,
+    fontSize: 17,
   },
 });
