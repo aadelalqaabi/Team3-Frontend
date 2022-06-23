@@ -7,14 +7,12 @@ class AuthStore {
   constructor() {
     makeAutoObservable(this);
   }
-  user = null
+  user = null;
 
   setUser = async (token) => {
     await AsyncStorage.setItem("myToken", JSON.stringify(token));
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
-    runInAction(() => {
-      this.user = decode(token);
-    });
+    this.user = decode(token);
   };
 
   checkForToken = async () => {

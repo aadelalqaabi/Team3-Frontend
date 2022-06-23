@@ -16,8 +16,7 @@ export default function Register() {
     setUser({ ...user, [name]: value });
   };
 
-  const handleSubmit = (event) => {
-    // event.preventDefault();
+  const handleSubmit = () => {
     authStore.register(user);
   };
   return (

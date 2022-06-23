@@ -34,7 +34,9 @@ class TripStore {
 
   updateTrip = async (updatedTrip, tripId) => {
     try {
-      const res = await instance.put(`/${tripId}`, updatedTrip);
+      const formData = new FormData();
+      for (const key in updatedTrip) formData.append(key, updatedTrip[key]);
+      const res = await instance.put(`/trips/${tripId}`, formData);
       this.trips = this.trips.map((trip) =>
         trip._id === tripId ? res.data : trip
       );
@@ -45,7 +47,7 @@ class TripStore {
 
   deletetrip = async (tripId) => {
     try {
-      await instance.delete(`/${tripId}`);
+      await instance.delete(`/trips/${tripId}`);
       this.trips = this.trips.filter((trip) => trip._id !== tripId);
     } catch (error) {
       console.log(error);
@@ -62,16 +64,15 @@ class TripStore {
 
   fetchOwners = async () => {
     try {
-      const res = await instance.get(`/users` );
+      const res = await instance.get(`/users`);
       this.owners = res.data;
-    }
-   catch (error) {
+    } catch (error) {
       console.error(error);
     }
   };
 
   getOwner = (ownerId) => {
-    const owner = this.owners.find((o) => (o._id === ownerId));
+    const owner = this.owners.find((o) => o._id === ownerId);
     return owner;
   };
 }

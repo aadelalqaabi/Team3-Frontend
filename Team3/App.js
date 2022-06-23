@@ -2,17 +2,16 @@ import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ProfileScreen from "./screens/ProfileScreen";
 import RootNavigator from "./index/home";
 import { CreateScreen } from "./screens/CreateScreen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
 import Login from "./screens/authScreens/Login";
 import Register from "./screens/authScreens/Register";
 import AuthButtons from "./screens/authScreens/AuthButtons";
 import { observer } from "mobx-react";
 import authStore from "./stores/authStore";
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from "expo-status-bar";
+import ProfileNavigator from "./index/ProfileNavigator";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -22,7 +21,7 @@ function App() {
   return (
     <NativeBaseProvider>
       <NavigationContainer>
-      <StatusBar style="dark" />
+        <StatusBar style="dark" />
         {checkUser ? (
           <TabBar />
         ) : (
@@ -42,7 +41,7 @@ function TabBar() {
       initialRouteName="Home"
       screenOptions={{
         tabBarStyle: {
-          backgroundColor:"#fffffc",
+          backgroundColor: "#fffffc",
           marginBottom: 10,
           marginLeft: 5,
           marginRight: 5,
@@ -79,7 +78,6 @@ function TabBar() {
               size={85}
               color="black"
               style={{
-                
                 paddingTop: "20%",
                 position: "absolute",
                 paddingBottom: "28%",

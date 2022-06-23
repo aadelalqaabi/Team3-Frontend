@@ -12,9 +12,6 @@ import React, { useState, useEffect } from "react";
 import tripStore from "../stores/tripStore";
 import * as ImagePicker from "expo-image-picker";
 import Reinput from "reinput";
-import authStore from "../stores/authStore";
-import { baseURL } from "../stores/instance";
-
 export function CreateScreen() {
   const [image, setImage] = useState(null);
   const [trip, setTrip] = useState({

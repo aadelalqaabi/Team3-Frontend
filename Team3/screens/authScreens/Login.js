@@ -15,7 +15,6 @@ export default function Login() {
   };
 
   const handleSubmit = (event) => {
-    // event.preventDefault();
     authStore.login(user);
   };
   return (
