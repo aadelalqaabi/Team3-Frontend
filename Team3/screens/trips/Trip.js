@@ -41,6 +41,12 @@ function Trip({ trip, onPress }) {
     return null;
   }
   return (
+  <View>
+      <TouchableOpacity style={styles.profile} onPress={() => {navigation.navigate('Owner', {owner: owner})}}>
+        <Image style={styles.profileImage} source={{ uri: `${baseURL}${owner.image}` }}/>
+        <Text style={styles.profileName}>{owner.username}</Text>
+      </TouchableOpacity>
+      {/* <Button onPress={() => {navigation.navigate('Owner', {owner: owner})}} title={owner.username} color="#841584" /> */}
     <TouchableOpacity
       style={styles.card}
       onPress={onPress}
@@ -60,6 +66,7 @@ function Trip({ trip, onPress }) {
         <Text style={styles.name}>{trip.title}</Text>
       </View>
     </TouchableOpacity>
+  </View>
   );
 }
 
@@ -111,5 +118,17 @@ const styles = StyleSheet.create({
   },
   edit: {
     borderRadius: 10,
+  },
+  profileImage: {
+    width: 25,
+    height: 25,
+    borderRadius: 40,
+  },
+  profile: { 
+    flexDirection: "row",
+  },
+  profileName: {
+    fontSize: 20,
+    marginLeft: 5,
   },
 });

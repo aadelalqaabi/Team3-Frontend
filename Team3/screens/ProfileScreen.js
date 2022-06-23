@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-} from "react-native";
+  FlatList
+} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import Logout from "./authScreens/Logout";
 import tripStore from "../stores/tripStore";
@@ -17,17 +18,27 @@ import { baseURL } from "../stores/instance";
 
 function ProfileScreen() {
   const navigation = useNavigation();
-  const trips = tripStore.trips
-    .filter((trip) => trip.userId._id === authStore.user.id)
-    .map((trip) => (
-      <Trip
-        key={trip._id}
+  let trips = authStore.user.trips;
+  trips = tripStore.trips.filter((trip) => trips.includes(trip._id));
+  // trips = trips.map((trip) => (
+  //   <OwnerTrip
+  //     key={trip._id}
+  //     trip={trip}
+  //     onPress={() => {
+  //       navigation.navigate('TripDetails', { id: trip._id });
+  //     }}
+  //   />
+  // ));
+  function renderTrip({ item: trip }) {
+    return (
+      <OwnerTrip
         trip={trip}
         onPress={() => {
           navigation.navigate("TripDetails", { id: trip._id });
         }}
       />
-    ));
+    );
+  }
   const editProfileButton = () => {
     navigation.navigate("Edit");
   };
@@ -54,7 +65,14 @@ function ProfileScreen() {
         <View style={styles.bio}>
           <Text style={styles.bioText}>{authStore.user.bio}</Text>
         </View>
-        <View>{trips}</View>
+        <ScrollView>
+        <FlatList
+          data={trips}
+          renderItem={renderTrip}
+          //Setting the number of column
+          numColumns={2}
+          keyExtractor={(trip, index) => index}
+        />
         <Logout />
       </ScrollView>
     </SafeAreaView>
@@ -91,14 +109,27 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   bio: {
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: "justify",
+    margin: 12,
     padding: 10,
-    borderColor: "black",
-    borderWidth: 1,
   },
   bioText: {
-    fontSize: 20,
+    fontSize: 13,
+    color: "grey"
   },
+  tripList: {
+    grid: 2,
+    gridtemplate: "c1 c2",
+  },
+  imageCard:{
+    // alignSelf: "center",
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    margin: 10,
+    zIndex: -1,
+    opacity: 0.8,
+  }
 });
